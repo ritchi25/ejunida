@@ -1,4 +1,3 @@
-﻿# ejunida
 # Curso de Python Unida 2025
 
 demostración de explicación breve
