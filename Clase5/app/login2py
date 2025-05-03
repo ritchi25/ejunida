@@ -1,0 +1,66 @@
+from flask import Blueprint, request, jsonify
+import mysql.connector
+from mysql.connector import Error
+
+login = Blueprint('login', __name__)
+
+# Configuración de la base de datos
+DB_CONFIG = {
+    'host': 'localhost', # Cambia esto si tu base de datos está en un contenedor Docker
+    'user': 'unida', # Reemplaza con tu usuario de base de datos
+    'password': 'unidad23', # Reemplaza con tu contraseña de base de datos
+    'database': 'jaguarete' # Reemplaza con el nombre de tu base de datos
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def verificar_credenciales(user, password):
+    codRes = "SIN_ERROR"
+    memRes = 'OK'
+    usuario = None
+
+    try:
+        print("Verificar login")
+        # Conectar a la base de datos
+        connection = mysql.connector.connect(**DB_CONFIG)
+        cursor = connection.cursor(dictionary=True)
+
+        # Ejecutar la consulta SQL
+        query = "SELECT username FROM users WHERE username = %s AND password = %s"
+        cursor.execute(query, (user, password))
+
+        # Obtener el resultado
+        result = cursor.fetchone()
+
+        if result:
+            usuario = result['username']
+            print("Usuario y contraseña OK")
+            accion = "Success"
+        else:
+            print("Usuario o contrastín incorrecta")
+            accion = "Usuario o contraseña incorrecta"
+            codRes = 'ERROR'
+            memRes = 'Credenciales incorrectas'
+
+        cursor.close()
+        connection.close()
+
+    except Error as e:
+        print("ERROR", str(e))
+        codRes = 'ERROR'
+        memRes = 'Msg: ' + str(e)
+        accion = "Error interno"
+    return codRes, memRes, usuario, accion
