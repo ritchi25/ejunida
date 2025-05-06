@@ -39,7 +39,7 @@ def verificar_credenciales(user, password):
         cursor = connection.cursor(dictionary=True)
 
         # Ejecutar la consulta SQL
-        query = "SELECT username FROM users WHERE username = %s AND pass = %s"
+        query = "SELECT username FROM users WHERE username = %s AND password = %s"
         cursor.execute(query, (user, password))
 
         # Obtener el resultado
