@@ -9,7 +9,7 @@ def dashboard():
         'ventas': 4520,
         'visitas': 3080
     }
-    return render_template('dashboard.html', data=datos)
+    return render_template('dashboard.html', datos=datos)
 
 if __name__ == '__main__':
     app.run(debug=True)
