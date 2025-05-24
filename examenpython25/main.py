@@ -1,16 +1,22 @@
-#!/usr/bin/env python3
-from flask import Flask
+from flask import Flask, request, jsonify
+from cliente import procesar_cliente
 
 app = Flask(__name__)
 
-##servicios rest
+@app.route('/cliente', methods=['POST'])
+def cliente():
+    try:
+        datos = request.get_json()  # Recibe el JSON {"cl": "4133266"}
+        ci = datos.get("cl")       # Extrae la cédula
 
-@app.route('/', methods=['GET'])
-def hello():
-    return 'Hola Mundo'
+        if not ci:
+            return jsonify({"error": "Campo 'cl' es requerido"}), 400
 
+        respuesta = procesar_cliente(ci)
+        return jsonify(respuesta), 200
 
-if __name__ == "__main__":
-    
-    app.run(host = '0.0.0.0', debug = True, port = 5003)
-    app.run(debug = True)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(port=5003)  # ¡Inicia el servidor en el puerto 5003!
